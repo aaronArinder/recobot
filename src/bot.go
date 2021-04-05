@@ -2,6 +2,7 @@ package recobot
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/aaronArinder/recobot/config"
 	"github.com/bwmarrin/discordgo"
@@ -37,11 +38,15 @@ func Start() {
 }
 
 func messageHandler(session *discordgo.Session, message *discordgo.MessageCreate) {
+	if !strings.HasPrefix(message.Content, config.BotPrefix) {
+		return
+	}
+
 	if message.Author.ID == BotID {
 		return
 	}
 
-	if message.Content == "ping" {
+	if message.Content == "!ping" {
 		_, _ = session.ChannelMessageSend(message.ChannelID, "pong")
 	}
 }
